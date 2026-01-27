@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACM恋爱物语 - Code Heart</title>
+    <title>ACM恋爱物语 - nowcoder-galgame</title>
     <style>
         * {
             margin: 0;
@@ -247,7 +247,7 @@
 <body>
     <div class="game-container">
         <div class="game-header">
-            ACM恋爱物语 - Code Heart
+            ACM恋爱物语 - nowcoder-galgame
         </div>
         <div class="game-content">
             <div class="bg-container">
@@ -268,7 +268,7 @@
     
     <div class="game-start" id="gameStart">
         <div class="game-title">ACM恋爱物语</div>
-        <div class="game-subtitle">Code Heart</div>
+        <div class="game-subtitle">nowcoder-galgame</div>
         <button class="start-button" onclick="startGame()">开始游戏</button>
     </div>
     
@@ -1031,6 +1031,12 @@
         // 下一句对话
         function nextDialogue() {
             if (!showChoices && gameStarted) {
+                // 检查是否到达结局场景的最后一个场景
+                // 好结局：85-91，普通结局：92-98，友情结局：102-108
+                const endScenes = [91, 98, 108];
+                if (endScenes.includes(currentScene)) {
+                    return; // 到达结局场景的最后一个，停止继续
+                }
                 currentScene++;
                 updateScene();
             }
