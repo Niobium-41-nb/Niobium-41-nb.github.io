@@ -3,265 +3,1057 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Niobium-41-nb | 个人网站</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://avatars.githubusercontent.com/u/176666816?v=4" type="image/x-icon">
+    <title>ACM恋爱物语 - Code Heart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-header {
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 2px solid #4a90e2;
+        }
+        
+        .game-content {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+        
+        .bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+        
+        .character-container {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            width: 400px;
+            height: 600px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .character-image {
+            height: 100%;
+            object-fit: contain;
+            transition: all 0.5s ease;
+        }
+        
+        .dialogue-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-top: 2px solid #4a90e2;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+        }
+        
+        .name-box {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4a90e2;
+        }
+        
+        .dialogue-box {
+            flex: 1;
+            font-size: 24px;
+            line-height: 1.5;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        
+        .dialogue-box::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .dialogue-box::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dialogue-box::-webkit-scrollbar-thumb {
+            background: rgba(74, 144, 226, 0.5);
+            border-radius: 4px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .control-button {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .control-button:hover {
+            background-color: #357abd;
+        }
+        
+        .choices-container {
+            position: absolute;
+            bottom: 200px;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 3;
+        }
+        
+        .choice-button {
+            padding: 15px 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border: 1px solid #4a90e2;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            width: 50%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+        
+        .choice-button:hover {
+            background-color: rgba(74, 144, 226, 0.2);
+            border-color: #5aa0f2;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end);
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .game-start {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .game-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+        
+        .game-subtitle {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 60px;
+        }
+        
+        .start-button {
+            padding: 15px 40px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .start-button:hover {
+            background-color: #357abd;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">Niobium-41-nb</a>
-            <ul class="nav-links">
-                <li><a href="#home">首页</a></li>
-                <li><a href="#about">关于我</a></li>
-                <li><a href="#projects">项目</a></li>
-                <li><a href="#skills">技能</a></li>
-                <li><a href="#contact">联系</a></li>
-            </ul>
-            <button class="menu-toggle" aria-label="菜单">
-                <i class="fas fa-bars"></i>
-            </button>
+    <div class="game-container">
+        <div class="game-header">
+            ACM恋爱物语 - Code Heart
         </div>
-    </nav>
-
-    <!-- 英雄区域 -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <img src="https://avatars.githubusercontent.com/u/176666816?v=4" alt="Niobium-41-nb" class="hero-avatar">
-                <h1 class="hero-title">vanadium-23</h1>
-                <p class="hero-subtitle">ICPC Bronze Medalist | HZAU</p>
-                <p class="hero-description">热爱编程的开发者，专注于算法竞赛和软件开发</p>
-                <div class="hero-buttons">
-                    <a href="https://github.com/Niobium-41-nb" target="_blank" rel="noopener" class="btn btn-primary">
-                        <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <a href="https://blog.nowcoder.net/vanadium23" target="_blank" rel="noopener" class="btn btn-secondary">
-                        <i class="fas fa-blog"></i> 博客
-                    </a>
-                    <a href="#contact" class="btn btn-outline">
-                        <i class="fas fa-envelope"></i> 联系我
-                    </a>
+        <div class="game-content">
+            <div class="bg-container">
+                <img class="bg-image" src="game/images/bg/bg classroom.png" alt="背景">
+            </div>
+            <div class="character-container">
+                <img class="character-image" src="game/images/nk-girl/微笑.jpg" alt="牛客娘">
+            </div>
+            <div class="dialogue-container">
+                <div class="name-box">林晨</div>
+                <div class="dialogue-box">九月午后，阳光透过窗户洒在课桌上。黑板上写着"编程基础朋辈辅导"几个大字。教室里零星坐着几位新生，我坐在讲台旁整理资料。</div>
+                <div class="controls">
+                    <button class="control-button" onclick="nextDialogue()">下一句</button>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- 关于我 -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">关于我</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>你好！我是 <strong>vanadium-23</strong>，一名来自武汉的开发者。</p>
-                    <p>我是华中农业大学(HZAU)的学生，对算法竞赛和软件开发充满热情。在2024年获得了ICPC铜牌，这是我编程旅程中的一个重要里程碑。</p>
-                    <p>我在GitHub上有15个公开仓库，涵盖了各种编程项目。我喜欢学习新技术，解决复杂问题，并与社区分享知识。</p>
-                    <div class="github-stats">
-                        <div class="stat">
-                            <i class="fas fa-code-branch"></i>
-                            <span class="stat-number">15</span>
-                            <span class="stat-label">公开仓库</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-users"></i>
-                            <span class="stat-number">3</span>
-                            <span class="stat-label">粉丝</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-user-plus"></i>
-                            <span class="stat-number">7</span>
-                            <span class="stat-label">关注</span>
-                        </div>
-                        <div class="stat">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span class="stat-number">2024-07</span>
-                            <span class="stat-label">加入GitHub</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-info">
-                    <h3>个人信息</h3>
-                    <ul>
-                        <li><i class="fas fa-user"></i> <strong>用户名:</strong> Niobium-41-nb</li>
-                        <li><i class="fas fa-map-marker-alt"></i> <strong>位置:</strong> 武汉, 中国</li>
-                        <li><i class="fas fa-building"></i> <strong>公司/学校:</strong> HZAU</li>
-                        <li><i class="fas fa-envelope"></i> <strong>邮箱:</strong> 1453070926@qq.com</li>
-                        <li><i class="fas fa-globe"></i> <strong>博客:</strong> <a href="https://blog.nowcoder.net/vanadium23" target="_blank" rel="noopener">blog.nowcoder.net/vanadium23</a></li>
-                        <li><i class="fas fa-trophy"></i> <strong>成就:</strong> ICPC铜牌得主</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 项目展示 -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2 class="section-title">项目展示</h2>
-            <p class="section-subtitle">以下是我在GitHub上的一些项目</p>
-            <div class="projects-grid">
-                <!-- 项目卡片将通过JavaScript动态加载 -->
-                <div class="project-card loading">
-                    <div class="project-skeleton">
-                        <div class="skeleton-title"></div>
-                        <div class="skeleton-description"></div>
-                        <div class="skeleton-tags"></div>
-                    </div>
-                </div>
-                <div class="project-card loading">
-                    <div class="project-skeleton">
-                        <div class="skeleton-title"></div>
-                        <div class="skeleton-description"></div>
-                        <div class="skeleton-tags"></div>
-                    </div>
-                </div>
-                <div class="project-card loading">
-                    <div class="project-skeleton">
-                        <div class="skeleton-title"></div>
-                        <div class="skeleton-description"></div>
-                        <div class="skeleton-tags"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="projects-more">
-                <a href="https://github.com/Niobium-41-nb?tab=repositories" target="_blank" rel="noopener" class="btn btn-primary">
-                    <i class="fab fa-github"></i> 查看所有项目
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 技能部分 -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <h2 class="section-title">技能与专长</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3><i class="fas fa-code"></i> 编程语言</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">C++</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">HTML/CSS</span>
-                        <span class="skill-tag">Java</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-tools"></i> 开发工具</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">VS Code</span>
-                        <span class="skill-tag">Linux</span>
-                        <span class="skill-tag">Docker</span>
-                        <span class="skill-tag">GitHub</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-chart-line"></i> 算法与竞赛</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">数据结构</span>
-                        <span class="skill-tag">算法设计</span>
-                        <span class="skill-tag">动态规划</span>
-                        <span class="skill-tag">图论</span>
-                        <span class="skill-tag">ICPC竞赛</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3><i class="fas fa-layer-group"></i> 框架与技术</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">React</span>
-                        <span class="skill-tag">Node.js</span>
-                        <span class="skill-tag">Vue.js</span>
-                        <span class="skill-tag">REST API</span>
-                        <span class="skill-tag">数据库设计</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 联系信息 -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">联系我</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>联系方式</h3>
-                    <p>如果你对我的项目感兴趣，或者想讨论技术问题，欢迎通过以下方式联系我：</p>
-                    <div class="contact-methods">
-                        <a href="https://github.com/Niobium-41-nb" target="_blank" rel="noopener" class="contact-method">
-                            <i class="fab fa-github"></i>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="mailto:1453070926@qq.com" class="contact-method">
-                            <i class="fas fa-envelope"></i>
-                            <span>邮箱</span>
-                        </a>
-                        <a href="https://blog.nowcoder.net/vanadium23" target="_blank" rel="noopener" class="contact-method">
-                            <i class="fas fa-blog"></i>
-                            <span>博客</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <h3>发送消息</h3>
-                    <form id="messageForm">
-                        <div class="form-group">
-                            <input type="text" id="name" placeholder="你的姓名" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" placeholder="你的邮箱" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" rows="4" placeholder="你的消息..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> 发送消息
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <h3>Niobium-41-nb</h3>
-                    <p>热爱编程的开发者</p>
-                </div>
-                <div class="footer-links">
-                    <h4>快速链接</h4>
-                    <ul>
-                        <li><a href="#home">首页</a></li>
-                        <li><a href="#about">关于我</a></li>
-                        <li><a href="#projects">项目</a></li>
-                        <li><a href="#skills">技能</a></li>
-                        <li><a href="#contact">联系</a></li>
-                    </ul>
-                </div>
-                <div class="footer-social">
-                    <h4>社交链接</h4>
-                    <div class="social-icons">
-                        <a href="https://github.com/Niobium-41-nb" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-                        <a href="mailto:1453070926@qq.com"><i class="fas fa-envelope"></i></a>
-                        <a href="https://blog.nowcoder.net/vanadium23" target="_blank" rel="noopener"><i class="fas fa-blog"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Niobium-41-nb. 基于GitHub信息创建的个人网站。</p>
-                <p>最后更新: <span id="currentYear"></span></p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript文件 -->
-    <script src="js/script.js"></script>
+    </div>
+    
+    <div class="game-start" id="gameStart">
+        <div class="game-title">ACM恋爱物语</div>
+        <div class="game-subtitle">Code Heart</div>
+        <button class="start-button" onclick="startGame()">开始游戏</button>
+    </div>
+    
+    <script>
+        // 游戏状态
+        let currentScene = 0;
+        let showChoices = false;
+        let gameStarted = false;
+        let choiceHistory = [];
+        
+        // 剧情数据
+        const scenes = [
+            // 序章：相遇
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "九月午后，阳光透过窗户洒在课桌上。黑板上写着\"编程基础朋辈辅导\"几个大字。教室里零星坐着几位新生，我坐在讲台旁整理资料。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "作为计算机系大三学生，我自愿担任朋辈辅导的助教。希望能帮助新生们更好地适应编程学习。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/抱歉.jpg",
+                name: "牛客娘",
+                dialogue: "抱歉……我来晚了，请问这里是计算机系的朋辈辅导教室吗？我是新生牛客娘。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "坐吧，刚讲到变量定义，我补讲一遍重点。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "辅导课进行中，牛客娘全程低头记笔记。偶尔皱眉停顿，会把疑问快速写在便签上。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/提问不发代码，只能给你算一卦.png",
+                name: "牛客娘",
+                dialogue: "林晨学长，我……我不太懂循环结构的逻辑，你能再讲一下吗？"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "没问题，你看这个例题——先定义循环条件，再拆解执行步骤。就像你记笔记的逻辑，一步步梳理就通了。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "夕阳斜照进教室，两人凑在课桌前看屏幕，影子叠在一起。"
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "后续一周，牛客娘每天提前20分钟到教室预习。课后留下刷题，我会主动帮她拓展思路。"
+            },
+            // 选择点1
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "在帮助她的方式上，我做出了选择。",
+                choices: [
+                    {
+                        text: "从基础概念开始，一步步详细讲解",
+                        nextScene: 10
+                    },
+                    {
+                        text: "通过例题引导她自己发现问题所在",
+                        nextScene: 10
+                    },
+                    {
+                        text: "先讲解核心思路，再让她独立完成练习",
+                        nextScene: 10
+                    }
+                ]
+            },
+            {
+                bg: "game/images/bg/bg classroom.png",
+                character: "game/images/nk-girl/高兴.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，你的笔记好清晰，我都看懂了！"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "周末傍晚，我们一起走出计算机楼。梧桐叶落在肩头，夕阳把影子拉得很长。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "谢谢林晨学长一直帮我，不然我肯定跟不上进度。朋辈辅导有你真的太好了~"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "你很努力，逻辑感也强，不用谢。以后有问题，随时找我。"
+            },
+            // 第一章：ACM招新
+            {
+                bg: "game/images/bg/bg club.png",
+                character: "game/images/nk-girl/来打比赛.jpg",
+                name: "林晨",
+                dialogue: "新学期开始，ACM俱乐部开始招新。作为俱乐部的核心成员，我负责技术考核部分。"
+            },
+            {
+                bg: "game/images/bg/bg club.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "考核现场，牛客娘紧张地握着笔，眼神专注地看着题目。我注意到她的手指微微颤抖，但思路却很清晰。"
+            },
+            // 第二章：深夜训练
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/卡住了.jpg",
+                name: "林晨",
+                dialogue: "深夜，训练室只剩我和牛客娘。她对着屏幕上的题目皱眉，手指悬在键盘上，迟迟没有敲下。"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/太难了.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，这道题我试了三种思路，都超时了……是不是我太笨了，根本不适合算法竞赛？"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "别急，先看看你的代码。"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "我拉过椅子，坐在她身边，仔细分析她的代码：\"这里的时间复杂度是O(n²)，数据规模大时肯定会超时。试试用滑动窗口优化，把复杂度降到O(n)。\""
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "AC了！林晨学长，我懂了！原来优化思路这么巧妙，我之前完全没想到！"
+            },
+            // 第一次模拟赛
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/紧张.jpg",
+                name: "林晨",
+                dialogue: "第一次模拟赛，牛客娘紧张得手心冒汗。比赛开始，她盯着题目，迟迟没有动笔。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/紧张.jpg",
+                name: "林晨",
+                dialogue: "我注意到她的状态，递过一张纸条：\"别紧张，按平时训练的思路来，先读题，再想算法，最后写代码。\""
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/WA了.jpg",
+                name: "牛客娘",
+                dialogue: "怎么会WA……明明样例都过了……"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "时间一分一秒过去，她越来越急。我走到她身后，轻声提醒：\"检查边界条件，特别是数组下标和循环终止条件。\""
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，谢谢你！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "比赛结束，牛客娘解出2题，排名中游。她看着成绩单，既欣慰又失落。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/难过.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，我只解出2题，是不是很差劲？其他队友都能解出3题以上……"
+            },
+            // 选择点2
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/难过.jpg",
+                name: "林晨",
+                dialogue: "我选择了安慰她的方式：",
+                choices: [
+                    {
+                        text: "第一次模拟赛能解出2题已经很棒了，很多新生都没你做得好。",
+                        nextScene: 30
+                    },
+                    {
+                        text: "别灰心，我们一起分析今天的错题，针对性加强练习。",
+                        nextScene: 30
+                    },
+                    {
+                        text: "你看，你现在已经能独立解出2题了，比上周进步太多了。",
+                        nextScene: 30
+                    }
+                ]
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "牛客娘",
+                dialogue: "嗯！林晨学长，我会继续努力的！下次模拟赛，我一定要解出3题！"
+            },
+            // 深夜训练继续
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/卡住了.jpg",
+                name: "林晨",
+                dialogue: "深夜训练继续。牛客娘刷题到凌晨，我在旁边陪她。偶尔递上一杯热牛奶，提醒她休息。"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/卡住了.jpg",
+                name: "牛客娘",
+                dialogue: "这道题……我卡了整整一个小时了。"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "让我看看。"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "我凑过去，发现是一个复杂的动态规划问题。我画图解释状态转移方程，牛客娘专注地听着。几分钟后，她眼睛一亮。"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "我明白了！原来可以这样优化！"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "她快速敲击键盘，代码一气呵成。提交——AC了！"
+            },
+            {
+                bg: "game/images/bg/bg room.png",
+                character: "game/images/nk-girl/比心.jpg",
+                name: "牛客娘",
+                dialogue: "太好了！又解决了一道难题！林晨学长，谢谢你一直陪着我。"
+            },
+            // 第三章：区域赛
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/紧张.jpg",
+                name: "林晨",
+                dialogue: "区域赛现场，气氛紧张。牛客娘第一次参加正式比赛，手心全是汗。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/紧张.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，我好紧张……要是拖了队伍后腿怎么办？"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "林晨",
+                dialogue: "别怕，按平时训练来，你能行。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "林晨",
+                dialogue: "比赛开始。牛客娘专注读题，很快解出第一题。第二题却卡住了，反复提交都是WA。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/WA了.jpg",
+                name: "牛客娘",
+                dialogue: "怎么会……明明思路没错……"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "我走到她身边，快速浏览她的代码：\"这里，数组开小了，题目说n最大是10^5，你只开了10^4。\""
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "啊！我太粗心了！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "她赶紧修改，重新提交——AC了。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "谢谢林晨学长！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "比赛进行到后半段，一道难题难住了所有人。牛客娘盯着题目，突然眼睛一亮。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/有思路了.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，这道题可以用线段树优化！我想到一个解法，但不确定对不对……"
+            },
+            // 选择点3
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/有思路了.jpg",
+                name: "林晨",
+                dialogue: "我选择了回应方式：",
+                choices: [
+                    {
+                        text: "相信你的直觉，线段树解法很有创意，写出来试试。",
+                        nextScene: 54
+                    },
+                    {
+                        text: "我们再快速推导一遍，确保时间复杂度没问题。",
+                        nextScene: 54
+                    },
+                    {
+                        text: "先写核心逻辑，遇到问题我们再一起调整。",
+                        nextScene: 54
+                    }
+                ]
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/TLE了.jpg",
+                name: "牛客娘",
+                dialogue: "代码写完，提交——TLE了。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/TLE了.jpg",
+                name: "牛客娘",
+                dialogue: "还是不行……"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "别灰心，看看哪里可以优化。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "林晨",
+                dialogue: "我们一起分析，发现一处冗余计算。优化后再次提交——AC了！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "AC了！林晨学长，我们做到了！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "比赛结束，我们队解出5题，排名中上。牛客娘看着成绩单，既开心又遗憾。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "赛后，我们坐在操场看台上。夜空星星点点。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，我今天犯了好多低级错误……要不是你提醒，我可能连第二题都过不了。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "第一次正式比赛，紧张很正常。你已经很棒了，那道线段树题，是你想出来的解法。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/高兴.jpg",
+                name: "牛客娘",
+                dialogue: "真的吗？其实我昨晚复习到很晚，专门看了线段树的模板……"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "努力会有回报的。下次比赛，你会更出色。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "牛客娘",
+                dialogue: "嗯！林晨学长，谢谢你一直陪着我。我会继续努力，不让你失望！"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/比心.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，这个送给你。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "这是？"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "是我自己做的，感谢你一直以来的指导。希望它能给你带来好运～"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "谢谢，我会好好珍惜的。"
+            },
+            // 第四章：国赛
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "林晨",
+                dialogue: "国赛现场，气氛凝重。牛客娘经过一年的训练，已经成长为队里的主力。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，这次我们一定要拿金牌！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "林晨",
+                dialogue: "嗯，一起加油。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "比赛开始。我们配合默契，很快解出前三题。第四题是道难题，卡住了很多队伍。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/有思路了.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，这道题我有点思路，但不确定……可能需要用到动态规划加状压，但状态转移方程很复杂。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "说说你的想法。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "林晨",
+                dialogue: "我认真倾听她的分析。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/思考中.jpg",
+                name: "牛客娘",
+                dialogue: "我觉得可以这样定义状态……"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/有思路了.jpg",
+                name: "林晨",
+                dialogue: "很棒的想法，我们试试。"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "林晨",
+                dialogue: "我们分工合作，她写核心算法，我负责调试优化。一个小时后，代码完成，提交——AC了！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/AC了.jpg",
+                name: "牛客娘",
+                dialogue: "AC了！林晨学长，我们做到了！"
+            },
+            {
+                bg: "game/images/bg/bg competition.png",
+                character: "game/images/nk-girl/捧杯了.jpg",
+                name: "林晨",
+                dialogue: "比赛结束，我们队解出6题，排名前列。颁奖仪式上，我们拿到了金牌。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "庆功宴后，我们走在回酒店的路上。月光洒在石板路上，安静美好。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，还记得一年前吗？我连循环结构都搞不懂，是你一点一点教我。现在，我们居然一起拿了国赛金牌……"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "是你自己努力的结果。你很聪明，也很坚韧，这一年进步飞快。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "那是因为有你在。每次我想放弃的时候，你都在我身边鼓励我。每次我卡题的时候，你都会耐心帮我分析。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "月光下，她的眼睛亮晶晶的。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "林晨学长，我……我喜欢你。不是学生对老师的喜欢，也不是队友对队长的喜欢。是女生对男生的喜欢。"
+            },
+            // 选择点4
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "我听到这句话，心跳加速。我该如何回应？",
+                choices: [
+                    {
+                        text: "我也喜欢你，从第一次见你认真记笔记的样子就心动了。",
+                        nextScene: 85
+                    },
+                    {
+                        text: "谢谢你的喜欢，但我现在更专注于比赛和学习。",
+                        nextScene: 92
+                    },
+                    {
+                        text: "我对你也有好感，我们可以试着从队友发展成恋人。",
+                        nextScene: 102
+                    }
+                ]
+            },
+            // 好结局：并肩同行
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/高兴.jpg",
+                name: "牛客娘",
+                dialogue: "真的吗？林晨学长……"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/高兴.jpg",
+                name: "林晨",
+                dialogue: "我也喜欢你，从第一次见面就喜欢了。看你认真记笔记的样子，看你解出题目时开心的样子，看你一步步成长的样子……每一个瞬间，都让我心动。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/比心.jpg",
+                name: "林晨",
+                dialogue: "以后，我们不仅是队友，还是恋人。一起刷题，一起比赛，一起走向更远的未来。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/比心.jpg",
+                name: "牛客娘",
+                dialogue: "嗯！"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/比心.jpg",
+                name: "林晨",
+                dialogue: "月光下，我们相拥。ACM竞赛的路上，多了一个并肩同行的人。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/比心.jpg",
+                name: "系统",
+                dialogue: "【好结局：并肩同行】牛客娘和林晨成为恋人，继续在ACM竞赛中创造佳绩。他们的故事，才刚刚开始。"
+            },
+            // 普通结局：队友与朋友
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "我明白了，林晨学长。学业和比赛确实更重要。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "我们还是最好的队友，一起努力冲击世界赛。等我们都准备好的时候，再来考虑其他事情。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "牛客娘",
+                dialogue: "嗯！我会更加努力的，不让你失望！"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "林晨",
+                dialogue: "月光下，我们击掌约定。ACM竞赛的路上，我们依然是最默契的队友。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/加油.jpg",
+                name: "系统",
+                dialogue: "【普通结局：队友与朋友】牛客娘和林晨保持着默契的队友关系，一起为世界赛努力。他们的故事，在ACM的赛场上继续书写。"
+            },
+            // 友情结局：慢慢发展
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "好啊，我们先从朋友做起。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "我也觉得这样更好。我们可以先一起刷题，一起比赛，慢慢了解彼此。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "牛客娘",
+                dialogue: "嗯！我会耐心等待的，林晨学长。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "林晨",
+                dialogue: "月光下，我们相视而笑。ACM竞赛的路上，多了一份微妙的情感。"
+            },
+            {
+                bg: "game/images/bg/bg campus.png",
+                character: "game/images/nk-girl/微笑.jpg",
+                name: "系统",
+                dialogue: "【友情结局：慢慢发展】牛客娘和林晨从朋友做起，感情在日常的相处中慢慢升温。他们的故事，在时间的沉淀中愈发美好。"
+            }
+        ];
+        
+        // 开始游戏
+        function startGame() {
+            const gameStartElement = document.getElementById('gameStart');
+            if (gameStartElement) {
+                gameStartElement.style.display = 'none';
+            }
+            gameStarted = true;
+            currentScene = 0;
+            updateScene();
+        }
+        
+        // 更新场景
+        function updateScene() {
+            if (currentScene >= scenes.length) {
+                return;
+            }
+            
+            const scene = scenes[currentScene];
+            
+            // 更新背景
+            document.querySelector('.bg-image').src = scene.bg;
+            
+            // 更新角色
+            document.querySelector('.character-image').src = scene.character;
+            
+            // 更新对话
+            document.querySelector('.name-box').textContent = scene.name;
+            document.querySelector('.dialogue-box').textContent = scene.dialogue;
+            
+            // 检查是否有选择
+            if (scene.choices) {
+                showChoices = true;
+                createChoices(scene.choices);
+            } else {
+                showChoices = false;
+                removeChoices();
+            }
+        }
+        
+        // 创建选择按钮
+        function createChoices(choices) {
+            removeChoices();
+            
+            const choicesContainer = document.createElement('div');
+            choicesContainer.className = 'choices-container';
+            
+            choices.forEach((choice, index) => {
+                const choiceButton = document.createElement('button');
+                choiceButton.className = 'choice-button';
+                choiceButton.textContent = choice.text;
+                choiceButton.onclick = () => {
+                    // 记录选择
+                    choiceHistory.push({
+                        scene: currentScene,
+                        choice: index
+                    });
+                    currentScene = choice.nextScene;
+                    showChoices = false;
+                    removeChoices();
+                    updateScene();
+                };
+                choicesContainer.appendChild(choiceButton);
+            });
+            
+            document.querySelector('.game-content').appendChild(choicesContainer);
+        }
+        
+        // 移除选择按钮
+        function removeChoices() {
+            const choicesContainer = document.querySelector('.choices-container');
+            if (choicesContainer) {
+                choicesContainer.remove();
+            }
+        }
+        
+        // 下一句对话
+        function nextDialogue() {
+            if (!showChoices && gameStarted) {
+                currentScene++;
+                updateScene();
+            }
+        }
+        
+        // 点击屏幕继续
+        document.querySelector('.game-content').addEventListener('click', function(e) {
+            if (!showChoices && gameStarted && !e.target.closest('.control-button') && !e.target.closest('.choice-button')) {
+                nextDialogue();
+            }
+        });
+        
+        // 回车键推进剧情
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !showChoices && gameStarted) {
+                nextDialogue();
+            }
+        });
+        
+        // 初始化游戏
+        window.onload = function() {
+            updateScene();
+        };
+    </script>
 </body>
 </html>
