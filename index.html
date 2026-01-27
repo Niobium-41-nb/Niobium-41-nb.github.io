@@ -1032,8 +1032,8 @@
         function nextDialogue() {
             if (!showChoices && gameStarted) {
                 // 检查是否到达结局场景的最后一个场景
-                // 好结局：85-91，普通结局：92-98，友情结局：102-108
-                const endScenes = [91, 98, 108];
+                // 好结局：85-90，普通结局：91-95，友情结局：96-100
+                const endScenes = [90, 95, 100];
                 if (endScenes.includes(currentScene)) {
                     return; // 到达结局场景的最后一个，停止继续
                 }
