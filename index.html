@@ -1444,7 +1444,7 @@
         
         // 点击屏幕继续
         document.querySelector('.game-content').addEventListener('click', function(e) {
-            if (!showChoices && gameStarted && !e.target.closest('.control-button') && !e.target.closest('.choice-button')) {
+            if (!showChoices && gameStarted && !e.target.closest('.control-button') && !e.target.closest('.choice-button') && !e.target.closest('.settings-button') && !e.target.closest('.settings-panel')) {
                 nextDialogue();
             }
         });
