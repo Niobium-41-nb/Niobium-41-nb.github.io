@@ -1310,7 +1310,13 @@
             choices.forEach((choice, index) => {
                 const choiceButton = document.createElement('button');
                 choiceButton.className = 'choice-button';
-                choiceButton.textContent = choice.text;
+                
+                // 替换选择选项中的昵称
+                let choiceText = choice.text;
+                choiceText = choiceText.replace(/林晨/g, playerName);
+                choiceText = choiceText.replace(/林晨学长/g, playerName + '学长');
+                choiceButton.textContent = choiceText;
+                
                 choiceButton.onclick = () => {
                     // 记录选择
                     choiceHistory.push({
@@ -1344,7 +1350,15 @@
                     clearInterval(typingInterval);
                     typingInterval = null;
                     isTyping = false;
-                    document.querySelector('.dialogue-box').textContent = scenes[currentScene].dialogue;
+                    
+                    // 直接显示全部文本，替换对话中的默认名字
+                    let displayDialogue = scenes[currentScene].dialogue;
+                    // 替换所有出现的"林晨"为玩家自定义名字
+                    displayDialogue = displayDialogue.replace(/林晨/g, playerName);
+                    // 替换所有出现的"林晨学长"为玩家自定义名字+学长
+                    displayDialogue = displayDialogue.replace(/林晨学长/g, playerName + '学长');
+                    
+                    document.querySelector('.dialogue-box').textContent = displayDialogue;
                     
                     // 如果有选择，立即显示
                     if (scenes[currentScene].choices) {
