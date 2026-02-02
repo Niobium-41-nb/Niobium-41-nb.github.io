@@ -1256,7 +1256,11 @@
             document.querySelector('.name-box').textContent = displayName;
             
             // 使用打字机效果显示文本，替换对话中的默认名字
-            const displayDialogue = scene.dialogue.replace(/林晨/g, playerName);
+            let displayDialogue = scene.dialogue;
+            // 替换所有出现的"林晨"为玩家自定义名字
+            displayDialogue = displayDialogue.replace(/林晨/g, playerName);
+            // 替换所有出现的"林晨学长"为玩家自定义名字+学长
+            displayDialogue = displayDialogue.replace(/林晨学长/g, playerName + '学长');
             typeWriter(displayDialogue);
             
             // 检查是否有选择
