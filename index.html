@@ -86,8 +86,29 @@
             border-top: 2px solid #4a90e2;
             padding: 20px;
             display: flex;
-            flex-direction: column;
             z-index: 2;
+        }
+        
+        .avatar-container {
+            margin-right: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #4a90e2;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dialogue-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .name-box {
@@ -122,6 +143,128 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
+        }
+        
+        .settings-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid #4a90e2;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-button:hover {
+            background-color: rgba(74, 144, 226, 0.3);
+        }
+        
+        .settings-panel {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid #4a90e2;
+            border-radius: 8px;
+            padding: 20px;
+            z-index: 101;
+            display: none;
+        }
+        
+        .settings-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .setting-item {
+            margin-bottom: 15px;
+        }
+        
+        .setting-label {
+            display: block;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .setting-slider {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .setting-value {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            color: #4a90e2;
+        }
+        
+        .setting-select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #4a90e2;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .setting-select:focus {
+            border-color: #5aa0f2;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+        
+        .setting-select option {
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+        }
+        
+        .music-toggle-button {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #4a90e2;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .music-toggle-button:hover {
+            background-color: rgba(74, 144, 226, 0.3);
+            border-color: #5aa0f2;
+        }
+        
+        .music-toggle-button.playing {
+            background-color: rgba(74, 144, 226, 0.2);
+        }
+        
+        .close-settings {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .close-settings:hover {
+            color: #4a90e2;
         }
         
         .control-button {
@@ -226,6 +369,41 @@
             margin-bottom: 60px;
         }
         
+        .name-input-container {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .name-label {
+            display: block;
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+        
+        .name-input {
+            padding: 12px 20px;
+            font-size: 20px;
+            width: 300px;
+            border: 2px solid #4a90e2;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .name-input:focus {
+            border-color: #5aa0f2;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .name-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
         .start-button {
             padding: 15px 40px;
             background-color: #4a90e2;
@@ -250,17 +428,57 @@
             ACM恋爱物语 - nowcoder-galgame
         </div>
         <div class="game-content">
+            <button class="settings-button" onclick="toggleSettings()">设置</button>
+            
+            <div class="settings-panel" id="settingsPanel">
+                <h3 class="settings-title">游戏设置</h3>
+                <button class="close-settings" onclick="toggleSettings()">×</button>
+                <div class="setting-item">
+                    <label class="setting-label">文本速度</label>
+                    <input type="range" class="setting-slider" id="typingSpeedSlider" min="10" max="100" value="30" step="5">
+                    <span class="setting-value" id="typingSpeedValue">30ms</span>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">背景音乐</label>
+                    <button class="music-toggle-button" id="musicToggle" onclick="toggleMusic()">开启音乐</button>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">选择音乐</label>
+                    <select class="setting-select" id="musicSelect" onchange="setCurrentMusic(this.value)">
+                        <option value="0">P1 - Summer Pockets - 水月陵</option>
+                        <option value="1">P2 - low tide - どんまる</option>
+                        <option value="2">P3 - Wings of Courage ピアノアレンジ1</option>
+                        <option value="3">P4 - 想いのカタチ - sawamurah</option>
+                        <option value="4">P5 - 星月夜 - 忍</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">音量</label>
+                    <input type="range" class="setting-slider" id="volumeSlider" min="0" max="100" value="50" step="1">
+                    <span class="setting-value" id="volumeValue">50%</span>
+                </div>
+                <div class="setting-item" style="text-align: center; margin-top: 20px;">
+                    <button class="control-button" onclick="saveGame()" style="margin-right: 10px;">保存游戏</button>
+                    <button class="control-button" onclick="loadGame()">加载游戏</button>
+                </div>
+            </div>
+            
             <div class="bg-container">
-                <img class="bg-image" src="game/images/bg/bg classroom.png" alt="背景">
+                <img class="bg-image" src="game/images/bg/bg%20classroom.png" alt="背景">
             </div>
             <div class="character-container">
                 <img class="character-image" src="game/images/nk-girl/微笑.jpg" alt="牛客娘">
             </div>
             <div class="dialogue-container">
-                <div class="name-box">林晨</div>
-                <div class="dialogue-box">九月午后，阳光透过窗户洒在课桌上。黑板上写着"编程基础朋辈辅导"几个大字。教室里零星坐着几位新生，我坐在讲台旁整理资料。</div>
-                <div class="controls">
-                    <button class="control-button" onclick="nextDialogue()">下一句</button>
+                <div class="avatar-container">
+                    <img class="avatar-image" src="game/images/chen/chen%20happy.png" alt="角色头像">
+                </div>
+                <div class="dialogue-content">
+                    <div class="name-box">林晨</div>
+                    <div class="dialogue-box">九月午后，阳光透过窗户洒在课桌上。黑板上写着"编程基础朋辈辅导"几个大字。教室里零星坐着几位新生，我坐在讲台旁整理资料。</div>
+                    <div class="controls">
+                        <button class="control-button" onclick="nextDialogue()">下一句</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -269,8 +487,18 @@
     <div class="game-start" id="gameStart">
         <div class="game-title">ACM恋爱物语</div>
         <div class="game-subtitle">nowcoder-galgame</div>
+        <div class="name-input-container">
+            <label for="playerName" class="name-label">请输入你的名字：</label>
+            <input type="text" id="playerName" class="name-input" placeholder="林晨">
+        </div>
         <button class="start-button" onclick="startGame()">开始游戏</button>
     </div>
+    
+    <!-- 背景音乐元素 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="game/music/P1%20-%20Summer%20Pockets%20-%20%E6%B0%B4%E6%9C%88%E9%99%B5.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
     
     <script>
         // 游戏状态
@@ -278,6 +506,25 @@
         let showChoices = false;
         let gameStarted = false;
         let choiceHistory = [];
+        let isTyping = false;
+        let typingSpeed = 30; // 打字机速度，单位ms
+        let typingInterval = null;
+        let playerName = "林晨"; // 默认玩家名字
+        
+        // 音乐状态
+        let bgMusic = null;
+        let isMusicPlaying = true; // 默认音乐开启
+        let musicVolume = 0.5; // 默认音量50%
+        let currentMusicIndex = 0;
+        
+        // 音乐文件列表
+        const musicList = [
+            "game/music/P1%20-%20Summer%20Pockets%20-%20%E6%B0%B4%E6%9C%88%E9%99%B5.mp3",
+            "game/music/P2%20-%20low%20tide%20-%20%E3%81%A9%E3%82%93%E3%81%BE%E3%82%8B.mp3",
+            "game/music/P3%20-%20Wings%20of%20Courage%20%E3%83%94%E3%82%A2%E3%83%8E%E3%82%A2%E3%83%AC%E3%83%B3%E3%82%B81%20-%20Elements%20Garden.mp3",
+            "game/music/P4%20-%20%E6%83%B3%E3%81%84%E3%81%AE%E3%82%AB%E3%82%BF%E3%83%81%E3%80%80-%20sawamurah.mp3",
+            "game/music/P5%20-%20%E6%98%9F%E6%9C%88%E5%A4%9C%20-%20%E5%BF%8D.mp3"
+        ];
         
         // 剧情数据
         const scenes = [
@@ -955,6 +1202,12 @@
         
         // 开始游戏
         function startGame() {
+            // 获取玩家输入的名字
+            const nameInput = document.getElementById('playerName');
+            if (nameInput && nameInput.value.trim()) {
+                playerName = nameInput.value.trim();
+            }
+            
             const gameStartElement = document.getElementById('gameStart');
             if (gameStartElement) {
                 gameStartElement.style.display = 'none';
@@ -978,18 +1231,69 @@
             // 更新角色
             document.querySelector('.character-image').src = scene.character;
             
+            // 更新头像
+            const avatarImage = document.querySelector('.avatar-image');
+            if (avatarImage) {
+                // 根据角色名字设置头像
+                if (scene.name === '林晨') {
+                    avatarImage.src = 'game/images/chen/chen happy.png';
+                } else if (scene.name === '牛客娘') {
+                    avatarImage.src = 'game/images/nk-girl/微笑.jpg';
+                } else if (scene.name === '系统') {
+                    avatarImage.src = 'game/images/bg/bg classroom.png';
+                } else {
+                    // 默认头像
+                    avatarImage.src = 'game/images/chen/chen happy.png';
+                }
+            }
+            
             // 更新对话
-            document.querySelector('.name-box').textContent = scene.name;
-            document.querySelector('.dialogue-box').textContent = scene.dialogue;
+            let displayName = scene.name;
+            // 如果是玩家角色（默认是"林晨"），使用自定义名字
+            if (scene.name === '林晨') {
+                displayName = playerName;
+            }
+            document.querySelector('.name-box').textContent = displayName;
+            
+            // 使用打字机效果显示文本，替换对话中的默认名字
+            const displayDialogue = scene.dialogue.replace(/林晨/g, playerName);
+            typeWriter(displayDialogue);
             
             // 检查是否有选择
             if (scene.choices) {
                 showChoices = true;
-                createChoices(scene.choices);
+                // 等打字完成后再显示选择
+                setTimeout(() => {
+                    createChoices(scene.choices);
+                }, scene.dialogue.length * typingSpeed);
             } else {
                 showChoices = false;
                 removeChoices();
             }
+        }
+        
+        // 打字机效果
+        function typeWriter(text) {
+            isTyping = true;
+            let index = 0;
+            const dialogueBox = document.querySelector('.dialogue-box');
+            dialogueBox.textContent = '';
+            
+            // 清除之前的打字间隔
+            if (typingInterval) {
+                clearInterval(typingInterval);
+            }
+            
+            typingInterval = setInterval(() => {
+                if (index < text.length) {
+                    dialogueBox.textContent += text.charAt(index);
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                    typingInterval = null;
+                    isTyping = false;
+                }
+            }, typingSpeed);
         }
         
         // 创建选择按钮
@@ -1031,14 +1335,110 @@
         // 下一句对话
         function nextDialogue() {
             if (!showChoices && gameStarted) {
+                // 如果正在打字，直接显示全部文本
+                if (isTyping) {
+                    clearInterval(typingInterval);
+                    typingInterval = null;
+                    isTyping = false;
+                    document.querySelector('.dialogue-box').textContent = scenes[currentScene].dialogue;
+                    
+                    // 如果有选择，立即显示
+                    if (scenes[currentScene].choices) {
+                        showChoices = true;
+                        createChoices(scenes[currentScene].choices);
+                    }
+                    return;
+                }
+                
                 // 检查是否到达结局场景的最后一个场景
-                // 好结局：85-90，普通结局：91-95，友情结局：96-100
-                const endScenes = [90, 95, 100];
+                // 好结局、普通结局、友情结局的系统提示场景
+                const endScenes = [95, 101, 107];
                 if (endScenes.includes(currentScene)) {
-                    return; // 到达结局场景的最后一个，停止继续
+                    // 到达结局，显示结局后的选择菜单
+                    showEndingChoices();
+                    return;
                 }
                 currentScene++;
                 updateScene();
+            }
+        }
+        
+        // 显示结局后的选择菜单
+        function showEndingChoices() {
+            showChoices = true;
+            const choices = [
+                { text: "重新开始游戏", nextScene: "restart" },
+                { text: "回到主菜单", nextScene: "menu" }
+            ];
+            createEndingChoices(choices);
+        }
+        
+        // 创建结局后的选择按钮
+        function createEndingChoices(choices) {
+            removeChoices();
+            
+            const choicesContainer = document.createElement('div');
+            choicesContainer.className = 'choices-container';
+            
+            choices.forEach((choice, index) => {
+                const choiceButton = document.createElement('button');
+                choiceButton.className = 'choice-button';
+                choiceButton.textContent = choice.text;
+                choiceButton.onclick = () => {
+                    // 记录选择
+                    choiceHistory.push({
+                        scene: currentScene,
+                        choice: index
+                    });
+                    
+                    // 处理结局后的选择
+                    if (choice.nextScene === "restart") {
+                        // 重新开始游戏
+                        restartGame();
+                    } else if (choice.nextScene === "menu") {
+                        // 回到主菜单
+                        returnToMenu();
+                    }
+                    
+                    showChoices = false;
+                    removeChoices();
+                };
+                choicesContainer.appendChild(choiceButton);
+            });
+            
+            document.querySelector('.game-content').appendChild(choicesContainer);
+        }
+        
+        // 重新开始游戏
+        function restartGame() {
+            // 重置游戏状态
+            currentScene = 0;
+            showChoices = false;
+            gameStarted = true;
+            choiceHistory = [];
+            
+            // 隐藏开始界面
+            const gameStartElement = document.getElementById('gameStart');
+            if (gameStartElement) {
+                gameStartElement.style.display = 'none';
+            }
+            
+            // 更新场景
+            updateScene();
+        }
+        
+        // 回到主菜单
+        function returnToMenu() {
+            // 重置游戏状态
+            currentScene = 0;
+            showChoices = false;
+            gameStarted = false;
+            choiceHistory = [];
+            
+            // 显示开始界面
+            const gameStartElement = document.getElementById('gameStart');
+            if (gameStartElement) {
+                gameStartElement.style.display = 'flex';
             }
         }
         
@@ -1059,7 +1459,187 @@
         // 初始化游戏
         window.onload = function() {
             updateScene();
+            
+            // 初始化打字速度滑块
+            const typingSpeedSlider = document.getElementById('typingSpeedSlider');
+            const typingSpeedValue = document.getElementById('typingSpeedValue');
+            
+            if (typingSpeedSlider && typingSpeedValue) {
+                typingSpeedSlider.addEventListener('input', function() {
+                    typingSpeed = parseInt(this.value);
+                    typingSpeedValue.textContent = typingSpeed + 'ms';
+                });
+            }
+            
+            // 初始化音量滑块
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeValue = document.getElementById('volumeValue');
+            
+            if (volumeSlider && volumeValue) {
+                volumeSlider.addEventListener('input', function() {
+                    const volume = parseInt(this.value) / 100;
+                    setMusicVolume(volume);
+                    volumeValue.textContent = this.value + '%';
+                });
+            }
+            
+            // 初始化音乐开关按钮
+            const musicToggle = document.getElementById('musicToggle');
+            if (musicToggle) {
+                updateMusicToggleButton();
+            }
+            
+            // 初始化音乐
+            initMusic();
         };
+        
+        // 更新音乐开关按钮状态
+        function updateMusicToggleButton() {
+            const musicToggle = document.getElementById('musicToggle');
+            if (musicToggle) {
+                if (isMusicPlaying) {
+                    musicToggle.textContent = '关闭音乐';
+                    musicToggle.classList.add('playing');
+                } else {
+                    musicToggle.textContent = '开启音乐';
+                    musicToggle.classList.remove('playing');
+                }
+            }
+        }
+        
+        // 初始化音乐
+        function initMusic() {
+            bgMusic = document.getElementById('bgMusic');
+            if (bgMusic) {
+                bgMusic.volume = musicVolume;
+                bgMusic.addEventListener('ended', function() {
+                    // 音乐结束时自动播放下一首
+                    nextMusic();
+                });
+                
+                if (isMusicPlaying) {
+                    bgMusic.play().catch(function(error) {
+                        // 自动播放失败时，将音乐设置为暂停状态
+                        isMusicPlaying = false;
+                        console.log('音乐自动播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        // 播放/暂停音乐
+        function toggleMusic() {
+            if (bgMusic) {
+                if (isMusicPlaying) {
+                    bgMusic.pause();
+                    isMusicPlaying = false;
+                } else {
+                    bgMusic.play().catch(function(error) {
+                        console.log('音乐播放失败:', error);
+                    });
+                    isMusicPlaying = true;
+                }
+                
+                // 更新音乐开关按钮
+                updateMusicToggleButton();
+            }
+        }
+        
+        // 切换到下一首音乐
+        function nextMusic() {
+            if (bgMusic) {
+                currentMusicIndex = (currentMusicIndex + 1) % musicList.length;
+                bgMusic.src = musicList[currentMusicIndex];
+                if (isMusicPlaying) {
+                    bgMusic.play().catch(function(error) {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        // 切换到上一首音乐
+        function prevMusic() {
+            if (bgMusic) {
+                currentMusicIndex = (currentMusicIndex - 1 + musicList.length) % musicList.length;
+                bgMusic.src = musicList[currentMusicIndex];
+                if (isMusicPlaying) {
+                    bgMusic.play().catch(function(error) {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        // 设置音乐音量
+        function setMusicVolume(volume) {
+            musicVolume = volume;
+            if (bgMusic) {
+                bgMusic.volume = volume;
+            }
+        }
+        
+        // 设置当前播放的音乐
+        function setCurrentMusic(index) {
+            if (bgMusic && index >= 0 && index < musicList.length) {
+                currentMusicIndex = index;
+                bgMusic.src = musicList[currentMusicIndex];
+                if (isMusicPlaying) {
+                    bgMusic.play().catch(function(error) {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        // 切换设置面板显示
+        function toggleSettings() {
+            const settingsPanel = document.getElementById('settingsPanel');
+            if (settingsPanel) {
+                settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+        
+        // 保存游戏进度
+        function saveGame() {
+            const gameData = {
+                currentScene,
+                choiceHistory,
+                typingSpeed,
+                gameStarted
+            };
+            
+            localStorage.setItem('acmGameSave', JSON.stringify(gameData));
+            alert('游戏已保存！');
+        }
+        
+        // 加载游戏进度
+        function loadGame() {
+            const savedData = localStorage.getItem('acmGameSave');
+            if (savedData) {
+                const gameData = JSON.parse(savedData);
+                currentScene = gameData.currentScene;
+                choiceHistory = gameData.choiceHistory || [];
+                typingSpeed = gameData.typingSpeed || 30;
+                gameStarted = gameData.gameStarted || false;
+                
+                // 更新UI
+                document.getElementById('typingSpeedSlider').value = typingSpeed;
+                document.getElementById('typingSpeedValue').textContent = typingSpeed + 'ms';
+                
+                if (gameStarted) {
+                    const gameStartElement = document.getElementById('gameStart');
+                    if (gameStartElement) {
+                        gameStartElement.style.display = 'none';
+                    }
+                }
+                
+                updateScene();
+                alert('游戏已加载！');
+            } else {
+                alert('没有找到保存的游戏进度！');
+            }
+        }
     </script>
 </body>
 </html>
